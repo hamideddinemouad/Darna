@@ -6,8 +6,10 @@
   "directories": {
     "test": "tests"
   },
+  "type": "module",
   "scripts": {
-    "start": "ts-node src/app.ts",
+    "start": "ts-node --esm src/server.ts",
+    "dev": "ts-node --esm src/server.ts",
     "build": "tsc",
     "test": "mocha -r ts-node/register tests/**/*.ts"
   },
@@ -23,6 +25,7 @@
   },
   "homepage": "https://github.com/hamideddinemouad/Darna#readme",
   "dependencies": {
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.2",
