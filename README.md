@@ -12,5 +12,4 @@ A modern web platform for managing and publishing real estate listings, designed
 - **Intelligent Pricing (LLM)**: Automatic price estimation for properties.
 - **Advanced Search**: Multi-criteria search and filtering.
 - **Admin Panel**: Dashboard for moderation, user management, and analytics.
-
-
+test
