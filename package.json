@@ -8,8 +8,8 @@
   },
   "type": "module",
   "scripts": {
-    "start": "ts-node --esm src/server.ts",
-    "dev": "ts-node --esm src/server.ts",
+    "start": "node --loader ts-node/esm src/server.ts",
+    "dev": "nodemon --exec node --loader ts-node/esm src/server.ts",
     "build": "tsc",
     "test": "mocha -r ts-node/register tests/**/*.ts"
   },

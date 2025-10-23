@@ -1,5 +1,5 @@
-import App from './app.ts'
-import Database from './config/database.ts';
+import App from './app.js'
+import Database from './config/database.js';
 
 export default class Server {
   private app: App;
