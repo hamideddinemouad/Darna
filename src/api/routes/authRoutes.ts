@@ -11,22 +11,12 @@ class Authroutes{
         this.router = Router();
         this.setupRoutes();
     }
-
     private setupRoutes() : void{
-        // attach method to router
+
         const authmiddleware : Authmiddleware = new Authmiddleware();
-        // this.router.use(authmiddleware.isLoggedIn.bind(authmiddleware));
-        // this.router.post("/", this.login.bind(this));
-        this.router.post(
-            "/register", 
-            authmiddleware.verifyRegisterInfos.bind(authmiddleware), 
-            Authcontroller.build.bind(Authcontroller));
-        
-    }
 
-
-    public login(req : Request, res : Response):void {
-
+        this.router.post("/register", authmiddleware.verifyRegisterInfos.bind(authmiddleware), Authcontroller.buildRegister.bind(Authcontroller));
+        this.router.post("/login", authmiddleware.verifyLoginInfos.bind(authmiddleware), Authcontroller.buildLogin.bind(Authcontroller)) ;
     }
 }
 
