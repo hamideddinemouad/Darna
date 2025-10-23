@@ -17,16 +17,20 @@ class AuthController{
         this.lastName = lastName;
     }
     public async login(res : Response){
-        const loginservice : Loginservice = new Loginservice(
-            this.email, 
-            this.password,);
-        
-        res.json(await loginservice.login());
+        try{
+            const loginservice : Loginservice = new Loginservice(
+                this.email, 
+                this.password,);
+            
+            res.status(200).json(await loginservice.login());
+        }catch(err){
+            res.status(500).json({error : err});
+        }
     }
     public async register(res : Response){
         const user = await User.findOne({email : this.email});
         if(await User.findOne({email : this.email})){
-            res.json({error : "already registered"});
+            res.status(409).json({error : "already registered"});
             return
         }
         const registerservice : Registerservice = new Registerservice(
@@ -36,7 +40,7 @@ class AuthController{
             this.lastName);
         
         await registerservice.register();
-        res.json({success : "Registered successfuly"});
+        res.status(201).json({success : "Registered successfuly"});
     }
     static buildRegister(req : Request, res : Response){
 
