@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
 
         password:{
             type: String,
-            required : true,
+            required : false,
             minlength : 6
         },
         role:{
@@ -32,6 +32,16 @@ const userSchema = new mongoose.Schema(
         verified : {
             type : Boolean,
             default : false
+        },
+        authProvider: {
+            type: String,
+            enum: ['local', 'google'],
+            default: 'local'
+        },
+        googleId: {
+            type: String,
+            unique: true,
+            sparse: true, 
         },
 }
 );
