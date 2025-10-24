@@ -16,11 +16,11 @@ class Loginservice{
         if(!user){
             return {error : "Incorrect Email or password"}
         }
-        if (!await bcrypt.compare(this.password, user.password)){
+        if (!await bcrypt.compare(this.password, user.password || '')){
             
             return {error : "Incorrect Email or password"};
         }
-        const token = Jwt.sign(this.email, process.env.SECRET_KEY);
+        const token = Jwt.sign(this.email, process.env.SECRET_KEY || '');
         return {sucess : "logged in", token : token};
 
     }
