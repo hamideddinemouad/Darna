@@ -8,8 +8,8 @@
   },
   "type": "module",
   "scripts": {
-    "start": "npx nodemon --watch src --ext ts,json --ignore node_modules --exec 'ts-node src/server.ts'",
-    "dev": "npx nodemon --watch src --ext ts,json --ignore node_modules --exec 'ts-node src/server.ts'",
+    "start": "npx nodemon --watch src --ext ts,json --ignore node_modules --exec ts-node src/server.ts",
+    "dev": "npx nodemon --watch src --ext ts,json --ignore node_modules --exec ts-node src/server.ts",
     "build": "tsc",
     "test": "mocha -r ts-node/register tests/**/*.ts"
   },
