@@ -1,35 +1,38 @@
-import type { Transporter } from "nodemailer"
-import nodemailer from "nodemailer"
-import type { Request,Response } from "express"
+import nodemailer from "nodemailer";
+import type { Transporter } from "nodemailer";
+
 
 type Authobject  = {
     user : string,
     pass : string,
     }
-type Mailoptions = {
+    
+type Communication = {
     from: string,
     to: string,
-}
-type Communication = {
-    subject: string,
-    text: string
+    subject : string,
+    text : string,
 }
 class Emailservice {
     serviceProvider : string;
     auth : Authobject;
-    // options : Mailoptions;
-    tranporter : Transporter;
+    transporter : Transporter;
 
     constructor (serviceProvider : string, auth : Authobject){
         this.serviceProvider = serviceProvider;
         this.auth = auth;
-        // this.options = options;
-        this.tranporter = nodemailer.createTransport({service : this.serviceProvider, auth : this.auth});
+    this.transporter = nodemailer.createTransport({service : this.serviceProvider, auth : this.auth});
     }
-    public send(res : Response){
-        res.json(this.tranporter);
+    public async send(mailInfos : Communication){
+        try {
+             const infos =  await this.transporter.sendMail(mailInfos);
+             return {success : "an email has been sent with the 2FA code check your email adress"};
+        } catch (err : any) {
+            throw new Error(err);
+        }
     }
+
 }
 
 export { Emailservice};
-export type {Authobject, Mailoptions, Communication};
+export type {Authobject, Communication};

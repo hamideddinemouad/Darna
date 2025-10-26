@@ -1,7 +1,6 @@
 import {Router} from "express";
 import Authcontroller from "../controllers/authController.ts";
 import Authmiddleware from "../middlewares/authMiddleware.ts";
-import type { Request, Response } from "express";
 
 class Authroutes{
 
@@ -17,6 +16,9 @@ class Authroutes{
 
         this.router.post("/register", authmiddleware.verifyRegisterInfos.bind(authmiddleware), Authcontroller.buildRegister.bind(Authcontroller));
         this.router.post("/login", authmiddleware.verifyLoginInfos.bind(authmiddleware), Authcontroller.buildLogin.bind(Authcontroller)) ;
+        this.router.get("/2fa/toggle", authmiddleware.isLoggedIn.bind(authmiddleware), Authcontroller.buildToggle2Fa.bind(Authcontroller));
+        this.router.post("/login/2fa", authmiddleware.verifyPartialLogIn.bind(authmiddleware), Authcontroller.buildCheck2Fa.bind(Authcontroller)) ;
+
     }
 }
 

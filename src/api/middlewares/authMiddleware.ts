@@ -1,4 +1,3 @@
-import { error } from "console";
 import type {NextFunction ,Request, Response } from "express";
 import  Jwt  from "jsonwebtoken";
 
@@ -11,17 +10,50 @@ class Authmiddleware{
             throw new Error("secret key missing");
         }
     }
+
     public isLoggedIn(req : Request, res : Response, next : NextFunction) {
+        if (!req.headers.authorization){
+            res.json({error : "no authorization provided"});
+            return
+        }
         const token : string = req.headers.authorization?.split(" ")[1] || "";
+        // res.json(token);
         if(token){
             try {
-                Jwt.verify(token, this.secretKey);
+                const payload = Jwt.verify(token, this.secretKey) as {email : string, twoFa : boolean};
+                if (payload.twoFa){
+                    res.json({error : "you need to continue 2FA process in api/auth/login/2FA or start a new one in api/auth/login"});
+                    return
+                }
+                res.locals.payload = payload;
+                next();
+                return
+                // res.json("ran");
             } catch (error) {
-                res.json(error);
+                res.json({errorEx : "invalid token user not logged in", jwtverifyerr : error, tokenprovided : token});
                 return;
             }
         }
-        next();
+    }
+    public verifyPartialLogIn (req : Request, res : Response, next : NextFunction){
+        if (!req.headers.authorization){
+            res.json({error : "no authorization provided"});
+            return
+        }
+        const token : string = req.headers.authorization?.split(" ")[1] || "";
+
+        if(token){
+            try {
+                const payload = Jwt.verify(token, this.secretKey) as {email : string, twoFa : boolean};
+                res.locals.payload = payload;
+                next();
+                return
+                // res.json("ran");
+            } catch (error) {
+                res.json({errorEx : "invalid token user not logged in", jwtverifyerr : error, tokenprovided : token});
+                return;
+            }
+        }
     }
     public verifyLoginInfos(req : Request, res : Response, next : NextFunction){
         if (!req.body){
