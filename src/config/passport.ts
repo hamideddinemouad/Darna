@@ -2,6 +2,7 @@ import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import type { VerifyCallback } from 'passport-google-oauth20';
+import User from '../models/userModel.ts';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -46,23 +47,24 @@ export function configurePassport(): void {
   };
 
   passport.use(
-    new JwtStrategy(jwtOpts, (payload: any, done: (err: any, user?: any) => void) => {
-      if (!payload || !payload.sub) {
-        return done(null, false);
+    new JwtStrategy(jwtOpts, async (payload: any, done: (err: any, user?: any) => void) => {
+      try {
+        if (!payload || !payload.sub) {
+          return done(null, false);
+        }
+        
+        const user = await User.findById(payload.sub).select('-password');
+        
+        if (!user) {
+          return done(null, false);
+        }
+        
+        return done(null, user);
+      } catch (error) {
+        return done(error, false);
       }
-      const user = { id: payload.sub };
-      return done(null, user);
     })
   );
-
-  passport.serializeUser((user: any, done) => {
-    done(null, user);
-  });
-
-  passport.deserializeUser((obj: any, done) => {
-    done(null, obj);
-  });
-
 
 }
 
