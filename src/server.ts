@@ -1,15 +1,18 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import App from './app.ts'
 import Database from './config/database.ts';
 
 export default class Server {
-  private app: App;
-  private database: Database;
-  private port: number;
+  readonly app: App;
+  readonly database: Database;
+  readonly port: number;
 
   constructor() {
     this.app = new App();
     this.database = new Database();
-    this.port = parseInt(process.env.PORT || '3000');
+    this.port = Number.parseInt(process.env.PORT || '3000');
   }
 
   public async start(): Promise<void> {
