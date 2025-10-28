@@ -43,9 +43,6 @@ export default class App {
     this.app.get('/api/health', (req: Request, res: Response) => {
       res.status(200).json({ status: 'OK', message: 'Server is running' });
     });
-    // this.app.post('/api/auth', (req: Request, res: Response) => {
-    //   res.status(200).json({ status: 'OK', message: 'you are in auth' });
-    // });
     this.app.use(("/api/auth"), this.authroutes.router);
   }
 
