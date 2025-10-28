@@ -1,10 +1,5 @@
 import mongoose from "mongoose";
 
-export enum UserRole {
-    PARTICULIER = "Particulier",
-    ENTREPRISE = "Entreprise",
-    ADMIN = "Admin"
-}
 
 const userSchema = new mongoose.Schema(
     {
@@ -28,8 +23,7 @@ const userSchema = new mongoose.Schema(
         },
         role: {
             type: String,
-            enum: Object.values(UserRole),
-            default: UserRole.PARTICULIER
+            default : "user"
         },
         verified: {
             type: Boolean,
