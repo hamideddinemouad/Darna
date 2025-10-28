@@ -35,9 +35,19 @@ const userSchema = new mongoose.Schema(
             type: Boolean,
             default: false
         },
-        twofactorauth: {
-            type: Boolean,
-            default: false
+        authProvider: {
+            type: String,
+            enum: ['local', 'google'],
+            default: 'local'
+        },
+        googleId: {
+            type: String,
+            unique: true,
+            sparse: true, 
+        },
+        twofactorauth :{
+            type : Boolean,
+            default : false
         },
         twofactorcode: {
             type: String,

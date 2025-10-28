@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
-import App from './app.js';
-
 dotenv.config();
+
+import mongoose from 'mongoose';
+import App from './app.ts';
 
 export default class Server {
   private app: App;
