@@ -1,5 +1,6 @@
 import type {NextFunction ,Request, Response } from "express";
 import  Jwt  from "jsonwebtoken";
+import passport from "passport";
 
 class Authmiddleware{
     secretKey  : string;
@@ -91,6 +92,24 @@ class Authmiddleware{
         }
         next();
         return;
+    }
+
+    public protectRoute(req: Request, res: Response, next: NextFunction) {
+        return passport.authenticate(
+            'jwt',
+            { session: false },
+            (err: any, user: any) => {
+                if (err) return next(err);
+
+                if (!user) {
+                    res.status(401).json({ message: 'Unauthorized' });
+                    return;
+                }
+
+                (req as any).user = user;
+                next();
+            }
+        )(req, res, next);
     }
 }
 export default Authmiddleware;
