@@ -1,6 +1,6 @@
 import User from "../../models/userModel.ts";
 import bcrypt from "bcrypt";
-import type { Request, Response } from "express";
+
 
 class Registerservice{
     firstName : string;

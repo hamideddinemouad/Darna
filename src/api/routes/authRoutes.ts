@@ -1,7 +1,6 @@
 import {Router} from "express";
 import Authcontroller from "../controllers/authController.ts";
 import Authmiddleware from "../middlewares/authMiddleware.ts";
-import type { Request, Response } from "express";
 import passport from "passport";
 import { googleAuth, googleAuthCallback } from "../controllers/SSOController.ts";
 
@@ -50,6 +49,9 @@ class Authroutes{
 				}
 			});
         });
+
+        this.router.get("/2fa/toggle", authmiddleware.isLoggedIn.bind(authmiddleware), Authcontroller.buildToggle2Fa.bind(Authcontroller));
+        this.router.post("/login/2fa", authmiddleware.verifyPartialLogIn.bind(authmiddleware), Authcontroller.buildCheck2Fa.bind(Authcontroller)) ;
 
 	}
 }
