@@ -1,6 +1,7 @@
 import {Router} from "express";
 import Authcontroller from "../controllers/authController.ts";
 import Authmiddleware from "../middlewares/authMiddleware.ts";
+import type { Request, Response, NextFunction } from "express";
 import passport from "passport";
 import { googleAuth, googleAuthCallback } from "../controllers/SSOController.ts";
 
