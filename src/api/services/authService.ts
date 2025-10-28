@@ -23,7 +23,7 @@ class AuthService {
             authProvider: 'google',
         });
 
-        const JWT_SECRET = "e80d6a41fb4fe10de6241a6236077f9b704c2e05376311bdcb0d385e239f6f0d3b5b";
+        const JWT_SECRET = process.env.JWT_SECRET || '';
 
         if (!JWT_SECRET) {
             throw new Error('JWT_SECRET is not defined in environment variables');

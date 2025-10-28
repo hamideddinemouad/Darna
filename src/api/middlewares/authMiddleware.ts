@@ -6,7 +6,7 @@ class Authmiddleware{
     secretKey  : string;
 
     constructor(){
-        this.secretKey = process.env.SECRET_KEY || "";
+        this.secretKey = process.env.JWT_SECRET || "";
         if (!this.secretKey){
             throw new Error("secret key missing");
         }
