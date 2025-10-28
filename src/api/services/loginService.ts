@@ -11,7 +11,7 @@ class Loginservice{
     constructor(email = "", password = "" ){
         this.email = email;
         this.password = password;
-        this.secretKey = process.env.SECRET_KEY || ""
+        this.secretKey = process.env.JWT_SECRET || ""
     }
     async login2Fa(payload : {email : string, twoFa : boolean}, code : string){
         const twoFaService =  new Twofaservice();
