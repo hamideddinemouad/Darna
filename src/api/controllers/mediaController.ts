@@ -8,16 +8,22 @@ class Mediacontroller{
      constructor (){
         this.minIoService = new MinioService();
      }
-     public  async uploadImages(files : uploadFiles){
+     public  async uploadImages(files : uploadFiles, fileName = ""){
         for (let image in files){
             if (!files[image] || !files[image][0]){
                 return { error : "if (files[image] && files[image][0])"}
             }
-            let fileName = new Date().toISOString();
+            fileName = fileName || new Date().toISOString();
             await this.minIoService.saveFile(files[image][0], fileName);
-        }}
-    public  async fetchImages(){
-        return await this.minIoService.getFile("2025-10-27T22:02:21.998Z");
+        }};
+    public  async fetchImages(imageNames : string[]){
+        
+        let urls  : string[] = [];
+        for (let imageName of imageNames){
+            urls.push(await this.minIoService.getFile(imageName));
+        }
+        return urls;
     }
 }
+
 export default Mediacontroller

@@ -1,5 +1,6 @@
+/// <reference types="multer" />
 import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
-
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 class MinioService{
   
     endpoint : string;
@@ -50,7 +51,8 @@ class MinioService{
             Key : fileName
         }
         const getObjectCommand = new GetObjectCommand(getObjectCommandInput);
-        return (await this.s3Client.send(getObjectCommand)).Body?.transformToByteArray();
+        const url = await getSignedUrl(this.s3Client, getObjectCommand);
+        return (url);
     }
 }
 export default MinioService;
