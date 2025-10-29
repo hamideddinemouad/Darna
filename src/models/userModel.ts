@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
 
+export const UserRole = {
+    PARTICULIER: "Particulier",
+    ENTREPRISE: "Entreprise",
+    ADMIN: "Admin"
+} as const;
+
+export type UserRoleType = typeof UserRole[keyof typeof UserRole];
 
 const userSchema = new mongoose.Schema(
     {
@@ -39,9 +46,9 @@ const userSchema = new mongoose.Schema(
             unique: true,
             sparse: true, 
         },
-        twofactorauth :{
-            type : Boolean,
-            default : false
+        twofactorauth: {
+            type: Boolean,
+            default: false
         },
         twofactorcode: {
             type: String,
