@@ -30,7 +30,8 @@ const userSchema = new mongoose.Schema(
         },
         role: {
             type: String,
-            default : "user"
+            enum: Object.values(UserRole),
+            default: UserRole.PARTICULIER
         },
         verified: {
             type: Boolean,
