@@ -47,7 +47,7 @@ class AuthController{
         }
         await user.save();
         const message = twoFastatus ? {success : "2FA ENABLED"} : {success : "2FA DISABLED"};
-        res.status(400).json(message);
+        res.status(200).json(message);
         return;
     }
     public async register(res : Response){

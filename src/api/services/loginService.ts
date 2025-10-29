@@ -17,7 +17,7 @@ class Loginservice {
     constructor(email = "", password = "") {
         this.email = email;
         this.password = password;
-        this.secretKey = process.env.SECRET_KEY || "";
+        this.secretKey = process.env.JWT_SECRET || ""
     }
 
     async login2Fa(payload: JWTPayload, code: string) {
