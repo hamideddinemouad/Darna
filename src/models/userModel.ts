@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
 
-export enum UserRole {
-    PARTICULIER = "Particulier",
-    ENTREPRISE = "Entreprise",
-    ADMIN = "Admin"
-}
+export const UserRole = {
+    PARTICULIER: "Particulier",
+    ENTREPRISE: "Entreprise",
+    ADMIN: "Admin"
+} as const;
+
+export type UserRoleType = typeof UserRole[keyof typeof UserRole];
 
 const userSchema = new mongoose.Schema(
     {
@@ -35,19 +37,9 @@ const userSchema = new mongoose.Schema(
             type: Boolean,
             default: false
         },
-        authProvider: {
-            type: String,
-            enum: ['local', 'google'],
-            default: 'local'
-        },
-        googleId: {
-            type: String,
-            unique: true,
-            sparse: true, 
-        },
-        twofactorauth :{
-            type : Boolean,
-            default : false
+        twofactorauth: {
+            type: Boolean,
+            default: false
         },
         twofactorcode: {
             type: String,

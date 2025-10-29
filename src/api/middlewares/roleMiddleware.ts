@@ -1,14 +1,16 @@
 import type { NextFunction, Request, Response } from "express";
 
-export enum UserRole {
-    PARTICULIER = "Particulier",
-    ENTREPRISE = "Entreprise",
-    ADMIN = "Admin"
-}
+export const UserRole = {
+    PARTICULIER: "Particulier",
+    ENTREPRISE: "Entreprise",
+    ADMIN: "Admin"
+} as const;
+
+export type UserRoleType = typeof UserRole[keyof typeof UserRole];
 
 class RoleMiddleware {
     
-    public hasRole(...allowedRoles: UserRole[]) {
+    public hasRole(...allowedRoles: string[]) {
         return (req: Request, res: Response, next: NextFunction): void => {
             if (!res.locals.payload) {
                 res.status(401).json({ 
