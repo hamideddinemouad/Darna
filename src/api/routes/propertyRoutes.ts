@@ -46,6 +46,12 @@ class PropertyRoutes {
             ]),
             this.propertyController.updateOwnProperty.bind(this.propertyController)
         );
+
+        this.router.delete(
+            "/:id",
+            authMiddleware.isLoggedIn.bind(authMiddleware),
+            this.propertyController.deleteOwnProperty.bind(this.propertyController)
+        );
     }
 }
 

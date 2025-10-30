@@ -225,6 +225,33 @@ class PropertyController {
         }
     }
 
+    async deleteOwnProperty(req: Request, res: Response): Promise<void> {
+        try {
+            const propertyId = req.params.id;
+            const userId = res.locals.payload.userId || res.locals.payload._id;
+
+            if (!propertyId) {
+                res.status(400).json({ error: "Property ID is required" });
+                return;
+            }
+
+            await this.propertyService.deleteProperty(propertyId, userId);
+
+            res.json({
+                success: true,
+                message: "Property deleted successfully"
+            });
+        } catch (error: any) {
+            if (error.message === "Property not found") {
+                res.status(404).json({ error: error.message });
+            } else if (error.message === "Unauthorized") {
+                res.status(403).json({ error: "You can only delete your own properties" });
+            } else {
+                res.status(500).json({ error: "Server error", details: error });
+            }
+        }
+    }
+
     async getMyProperties(req: Request, res: Response): Promise<void> {
         try {
             const userId = res.locals.payload.userId || res.locals.payload._id;

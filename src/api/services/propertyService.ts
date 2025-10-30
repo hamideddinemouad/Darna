@@ -37,6 +37,20 @@ class PropertyService {
         return await property.save();
     }
 
+    async deleteProperty(propertyId: string, ownerId: string) {
+        const property = await Property.findById(propertyId);
+
+        if (!property) {
+            throw new Error("Property not found");
+        }
+
+        if (property.owner.toString() !== ownerId.toString()) {
+            throw new Error("Unauthorized");
+        }
+
+        return await Property.findByIdAndDelete(propertyId);
+    }
+
     async getPropertiesByOwner(ownerId: string) {
         return await Property.find({ owner: ownerId }).sort({ createdAt: -1 });
     }
