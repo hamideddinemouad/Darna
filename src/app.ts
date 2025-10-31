@@ -1,22 +1,23 @@
 import express from 'express';
 import type { Application, Request, Response } from 'express';
-import Authroutes from './api/routes/authRoutes.ts';
+// import Authroutes from './api/routes/authRoutes.ts';
 import PropertyRoutes from './api/routes/propertyRoutes.ts';
 import cookieParser from 'cookie-parser';
-import passport from 'passport';
+// import passport from 'passport';
 import session from 'express-session';
-import configurePassport from './config/passport.ts';
+// import configurePassport from './config/passport.ts';
 import Mediacontroller from './api/controllers/mediaController.ts';
+import { requireAuth } from './api/middlewares/requireAuth.ts';
 
 export default class App {
 
   public app: Application;
-  public authroutes: Authroutes;
+  // public authroutes: Authroutes;
   public propertyRoutes: PropertyRoutes;
 
   constructor() {
     this.app = express();
-    this.authroutes = new Authroutes();
+    // this.authroutes = new Authroutes();
     this.propertyRoutes = new PropertyRoutes();
 
     this.app.use(express.json());
@@ -37,10 +38,10 @@ export default class App {
       })
     );
 
-    this.app.use(passport.initialize());
-    this.app.use(passport.session());
+    // this.app.use(passport.initialize());
+    // this.app.use(passport.session());
 
-    configurePassport();
+    // configurePassport();
 
   }
 
@@ -52,8 +53,8 @@ export default class App {
       const mediaController = new Mediacontroller();
       res.json(await mediaController.fetchImages(["2025-10-27T22:02:21.998Z", "2025-10-27T22:02:22.036Z"]))
     })
-    this.app.use(("/api/auth"), this.authroutes.router);
-    this.app.use(("/api/properties"), this.propertyRoutes.router);
+    // this.app.use(("/api/auth"), this.authroutes.router);
+    this.app.use(("/api/properties"), requireAuth, this.propertyRoutes.router);
   }
 
   public getExpressApp(): Application {
