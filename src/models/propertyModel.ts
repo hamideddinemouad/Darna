@@ -38,7 +38,7 @@ const propertySchema = new mongoose.Schema(
         },
         owner: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+            ref: "DarnaUserProfile",
             required: true
         },
         status: {
