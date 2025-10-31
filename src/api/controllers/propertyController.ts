@@ -100,7 +100,13 @@ class PropertyController {
 
     async createProperty(req: Request, res: Response): Promise<void> {
         try {
-            const userId = res.locals.payload.userId || res.locals.payload._id;
+            const userId = res.locals.payload.userId;
+
+            if (!userId) {
+                res.status(401).json({ error: "User ID not found in token" });
+                return;
+            }
+
             const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
             const { title, description, price, location, characteristics } = req.body;
