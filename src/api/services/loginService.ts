@@ -4,6 +4,7 @@ import Jwt from "jsonwebtoken";
 import Twofaservice from "./twoFaService.ts";
 
 interface JWTPayload {
+    userId: string;
     email: string;
     role: string;
     twoFa: boolean;
@@ -28,6 +29,7 @@ class Loginservice {
         }
 
         const modifiedPayload: JWTPayload = {
+            userId: payload.userId,
             email: payload.email,
             role: payload.role,
             twoFa: false
@@ -54,6 +56,7 @@ class Loginservice {
             await user.save();
 
             const payload: JWTPayload = {
+                userId: user._id.toString(),
                 email: this.email,
                 role: user.role,
                 twoFa: true
@@ -69,6 +72,7 @@ class Loginservice {
         }
 
         const payload: JWTPayload = {
+            userId: user._id.toString(),
             email: this.email,
             role: user.role,
             twoFa: false
@@ -79,6 +83,7 @@ class Loginservice {
             success: "logged in completely", 
             token: token,
             user: {
+                id: user._id,
                 email: user.email,
                 firstname: user.firstname,
                 lastname: user.lastname,
