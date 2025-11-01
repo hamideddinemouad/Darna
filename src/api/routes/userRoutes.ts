@@ -30,6 +30,13 @@ class UserRoutes {
             roleMiddleware.hasRole(UserRole.ADMIN),
             this.userController.getEntrepriseById.bind(this.userController)
         );
+
+        this.router.put(
+            "/entreprises/:id/validate",
+            authMiddleware.isLoggedIn.bind(authMiddleware),
+            roleMiddleware.hasRole(UserRole.ADMIN),
+            this.userController.validateEntreprise.bind(this.userController)
+        );
     }
 }
 
