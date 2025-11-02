@@ -23,6 +23,13 @@ class ReportRoutes {
             roleMiddleware.hasRole(UserRole.ADMIN),
             this.reportController.getAllReports.bind(this.reportController)
         );
+
+        this.router.get(
+            "/:id",
+            authMiddleware.isLoggedIn.bind(authMiddleware),
+            roleMiddleware.hasRole(UserRole.ADMIN),
+            this.reportController.getReportById.bind(this.reportController)
+        );
     }
 }
 
