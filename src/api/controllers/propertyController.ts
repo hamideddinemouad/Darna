@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import PropertyService from "../services/propertyService.ts";
 import Mediacontroller from "./mediaController.ts";
+import Report from "../../models/reportModel.ts";
 
 class PropertyController {
     private propertyService: PropertyService;
@@ -267,6 +268,79 @@ class PropertyController {
                 success: true,
                 count: properties.length,
                 properties: properties
+            });
+        } catch (error) {
+            res.status(500).json({ error: "Server error", details: error });
+        }
+    }
+
+    async reportProperty(req: Request, res: Response): Promise<void> {
+        try {
+            const propertyId = req.params.id;
+            const userId = res.locals.payload.userId;
+            const { reason, description } = req.body;
+
+            if (!propertyId) {
+                res.status(400).json({ error: "Property ID is required" });
+                return;
+            }
+
+            if (!reason || !description) {
+                res.status(400).json({ error: "Reason and description are required" });
+                return;
+            }
+
+            const validReasons = [
+                "inappropriate_content",
+                "fake_listing",
+                "wrong_information",
+                "spam",
+                "scam",
+                "other"
+            ];
+
+            if (!validReasons.includes(reason)) {
+                res.status(400).json({ error: "Invalid reason" });
+                return;
+            }
+
+            const property = await this.propertyService.getPropertyById(propertyId);
+
+            if (!property) {
+                res.status(404).json({ error: "Property not found" });
+                return;
+            }
+
+            const existingReport = await Report.findOne({
+                property: propertyId,
+                reportedBy: userId,
+                status: "pending"
+            });
+
+            if (existingReport) {
+                res.status(400).json({ error: "You have already reported this property" });
+                return;
+            }
+
+            const report = new Report({
+                property: propertyId,
+                reportedBy: userId,
+                reason: reason,
+                description: description,
+                status: "pending"
+            });
+
+            await report.save();
+
+            res.status(201).json({
+                success: true,
+                message: "Property reported successfully",
+                report: {
+                    id: report._id,
+                    property: propertyId,
+                    reason: reason,
+                    status: report.status
+                }
             });
         } catch (error) {
             res.status(500).json({ error: "Server error", details: error });

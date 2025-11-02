@@ -19,6 +19,13 @@ class PropertyRoutes {
         const authMiddleware = new Authmiddleware();
 
         this.router.get("/", this.propertyController.getAllProperties.bind(this.propertyController));
+        
+        this.router.get(
+            "/my/properties",
+            authMiddleware.isLoggedIn.bind(authMiddleware),
+            this.propertyController.getMyProperties.bind(this.propertyController)
+        );
+
         this.router.get("/:id", this.propertyController.getPropertyById.bind(this.propertyController));
 
         this.router.post(
@@ -31,10 +38,10 @@ class PropertyRoutes {
             this.propertyController.createProperty.bind(this.propertyController)
         );
 
-        this.router.get(
-            "/my/properties",
+        this.router.post(
+            "/:id/report",
             authMiddleware.isLoggedIn.bind(authMiddleware),
-            this.propertyController.getMyProperties.bind(this.propertyController)
+            this.propertyController.reportProperty.bind(this.propertyController)
         );
 
         this.router.put(
