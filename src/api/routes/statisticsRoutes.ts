@@ -23,6 +23,13 @@ class StatisticsRoutes {
             roleMiddleware.hasRole(UserRole.ADMIN),
             this.statisticsController.getBasicStats.bind(this.statisticsController)
         );
+
+        this.router.get(
+            "/advanced",
+            authMiddleware.isLoggedIn.bind(authMiddleware),
+            roleMiddleware.hasRole(UserRole.ADMIN),
+            this.statisticsController.getAdvancedStats.bind(this.statisticsController)
+        );
     }
 }
 
