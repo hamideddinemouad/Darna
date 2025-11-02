@@ -30,6 +30,27 @@ class ReportRoutes {
             roleMiddleware.hasRole(UserRole.ADMIN),
             this.reportController.getReportById.bind(this.reportController)
         );
+
+        this.router.put(
+            "/:id/approve",
+            authMiddleware.isLoggedIn.bind(authMiddleware),
+            roleMiddleware.hasRole(UserRole.ADMIN),
+            this.reportController.approveReport.bind(this.reportController)
+        );
+
+        this.router.put(
+            "/:id/reject",
+            authMiddleware.isLoggedIn.bind(authMiddleware),
+            roleMiddleware.hasRole(UserRole.ADMIN),
+            this.reportController.rejectReport.bind(this.reportController)
+        );
+
+        this.router.delete(
+            "/:id/property",
+            authMiddleware.isLoggedIn.bind(authMiddleware),
+            roleMiddleware.hasRole(UserRole.ADMIN),
+            this.reportController.deleteReportedProperty.bind(this.reportController)
+        );
     }
 }
 
